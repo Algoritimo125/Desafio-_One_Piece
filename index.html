@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>One piece</title>
+</head>
+
+<body>
+    <main>
+        <section>
+            <h1>Cadastrar</h1>
+            <p>Insira o nome da comida que irá cadastrar</p>
+            <input type="text" id="input_cadastro_comida">
+            <button onclick="Cadastrar()">Cadastrar</button>
+        </section>
+        <hr>
+        <section>
+            <h1>Pesquisar</h1>
+
+            <p>Insira o nome da comida que quer encontrar</p>
+            <input type="text" id="input_pesquisa_comida">
+            <button onclick="Pesquisar()">Pesquisar</button>
+
+            <p><b> Ver o estoque inteiro</b></p>
+            <button onclick="Exibir()">Exibir estoque</button>
+            <br>
+
+            <p><b>Verificar tamanho do estoque</b></p>
+            <button onclick="Verificar()">Verificar quantidade</button>
+        </section>
+        <hr>
+        <section>
+            <h1>Atualizar estoque</h1>
+
+            <p>Insira o nome da comida que deseja substituir</p>
+            <input id="input_old_nome"></input>
+
+            <p>Insira o novo nome da comida</p>
+            <input id="input_new_nome"></input>
+
+            <br><br>
+
+            <button onclick="Alterar()">Alterar nome</button>
+        </section>
+        <hr>
+        <section>
+            <h1>Deletar</h1>
+
+            <p>Insira o nome da comida que deseja deletar</p>
+            <input id="input_del_nome"></input>
+
+            <br><br>
+
+            <button onclick="Remover()">Remover comida</button>
+        </section>
+        <hr>
+
+        <section>
+            <h1>Exibição</h1>
+            <div id="div_msm"></div>
+        </section>
+    </main>
+</body>
+
+</html>
+
+<script>
+    lista_comida_cadastrada = [];
+
+    function Cadastrar() {
+        var cadastro_comida = input_cadastro_comida.value;
+
+        lista_comida_cadastrada[lista_comida_cadastrada.length] = cadastro_comida;
+    }
+
+    function Verificar() {
+        var qtd_itens_lista = lista_comida_cadastrada.length;
+
+        if (qtd_itens_lista < 3) {
+            div_msm.innerHTML = `Desse jeito, o Luffy devora até o navio`;
+        } else if (qtd_itens_lista <= 7) {
+            div_msm.innerHTML = `O comilão do Luffy não vai deixar sobrar nenhuma comida`;
+        } else if (qtd_itens_lista <= 10) {
+            div_msm.innerHTML = `Assim, talvez sobre um pouco para a tripulação`;
+        } else {
+            div_msm.innerHTML = `Desse jeito vai ter comida para todo mundo e ainda consigo guardar um pouco para a senhorita Nami!`;
+        }
+    }
+
+    function Pesquisar() {
+        var pesquisa_comida = input_pesquisa_comida.value;
+        var msm = `Alguém vai ter que comprar ${pesquisa_comida}, tá fazendo falta...`;
+
+        var qtd_itens_lista = 0;
+        for (i = 0; i < lista_comida_cadastrada.length; i++) {
+            if (lista_comida_cadastrada[i] == pesquisa_comida) {
+                qtd_itens_lista++;
+                msm = `Temos a comida ${pesquisa_comida} e há ${qtd_itens_lista} unidade(s) dela`;
+            }
+        }
+
+        div_msm.innerHTML = msm;
+    }
+
+    function Exibir() {
+        var msm = ``;
+        var msm_secundaria = ``;
+        var pnome = '';
+
+
+        var lista_validacao = [];
+
+        for (var i = 0; i < lista_comida_cadastrada.length; i++) {
+            var nome_pesquisa = lista_comida_cadastrada[i];
+
+            var qtd_itens_lista = 0;
+
+            if (!lista_validacao.includes(nome_pesquisa)) {
+
+                lista_validacao.push(nome_pesquisa);
+
+                for (var j = 0; j < lista_comida_cadastrada.length; j++) {
+
+                    if (lista_comida_cadastrada[j] == nome_pesquisa) {
+                        qtd_itens_lista++;
+                        if (qtd_itens_lista > 1) {
+                            pronome = `unidades`;
+                        } else {
+                            pronome = `unidade`;
+                        }
+                    }
+                }
+                msm += `${lista_comida_cadastrada[i]} (${qtd_itens_lista} ${pronome})<br>`;
+            }
+
+
+        }
+
+        div_msm.innerHTML = msm;
+
+    }
+
+    function Alterar() {
+        var old_nome = input_old_nome.value;
+
+        if(lista_comida_cadastrada.includes(old_nome)) {
+            var index = lista_comida_cadastrada.indexOf(old_nome);
+            while(index > -1){
+                index = lista_comida_cadastrada.indexOf(old_nome);
+                lista_comida_cadastrada[index] = new_nome;
+            }
+           div_msm.innerHTML = `A comida ${old_nome} foi alterada para ${new_nome}`;
+        } else {
+            div_msm.innerHTML = `A comida ${old_nome} não foi encontrada no estoque.`;
+        }
+    }
+
+    function Remover () {
+        var del_nome = input_del_nome.value;
+
+        if(lista_comida_cadastrada.includes(del_nome)) {
+            var index = lista_comida_cadastrada.indexOf(del_nome);
+            while(index > -1){
+                index = lista_comida_cadastrada.indexOf(del_nome);
+                lista_comida_cadastrada.splice(index,1);
+            }
+           div_msm.innerHTML = `A comida ${del_nome} foi removida do estoque.`;
+        } else {
+            div_msm.innerHTML = `A comida ${del_nome} não está no estoque.`;
+        }
+    }
+
+</script>
